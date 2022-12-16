@@ -22,6 +22,17 @@ const N_LAMP_PARAMS: usize = 6;
 
 #[allow(dead_code)]
 #[derive(Default, Debug, Clone, Property, PartialEq)]
+pub struct Lamp {
+    n_lamp: i32,
+    lamp_type: String,
+    tot_luminous_flux: f64,
+    colour_temperature: String,
+    colour_rendering: String,
+    wattage: f64,
+
+}
+#[allow(dead_code)]
+#[derive(Default, Debug, Clone, Property, PartialEq)]
 pub struct EulumdatFile {
     /// The first line of the file. Contains company identification / data bank / version / format identification.
     header: String,
@@ -158,6 +169,7 @@ impl EulumdatFile {
         Ok(())
     }
 
+    //noinspection ALL
     /// Is responsible for processing the lines of the file, and parsing values where necessary.
     pub fn process_line(&mut self, iline: &usize, line: &str) -> Result<(), ldt_err::Error> {
         match *iline {
@@ -355,8 +367,18 @@ impl EulumdatFile {
 
     /// Helps filter down the lines in the file that correspond to a certain parameter in a lamp set.
     fn lamp_section(&self, iline: usize, isect: usize) -> bool {
-        iline >= LAMP_SECTION_START + isect * self.n_lamp_sets
-            && iline < LAMP_SECTION_START + (isect + 1) * self.n_lamp_sets
+        // iline >= LAMP_SECTION_START + isect * self.n_lamp_sets
+        //     && iline < LAMP_SECTION_START + (isect + 1) * self.n_lamp_sets
+
+        // last line to hold lamp_section values
+        let end_lamp_line = LAMP_SECTION_START + self.n_lamp_sets() * N_LAMP_PARAMS;
+        if iline >= end_lamp_line || iline < LAMP_SECTION_START {
+            return false}
+        // first relative line of the lamp_section for the nth lampset
+        let first = (end_lamp_line - iline + isect ) % N_LAMP_PARAMS;
+        if  first + isect == isect {return true} else {
+            return false;
+        }
     }
 
     /// Provides the current index in the current parameter for the lamp set.

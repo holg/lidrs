@@ -5,12 +5,22 @@ use std::path::Path;
 
 /// Example file provided by Paul Bourne's documentation:
 /// http://paulbourke.net/dataformats/ldt/
-const EXAMPLE_LDT_FILE: &str = include_str!("example.ldt");
+const EXAMPLE_LDT_FILE_NO_LAMPSET: &str = include_str!("example.ldt");
+const EXAMPLE_LDT_FILE_LAMPSET: &str = include_str!("lampsets.ldt");
 
 #[test]
-fn test_parse_ldt() {
+fn test_parse_ldt_example_no_lampset(){
+    test_parse_ldt(EXAMPLE_LDT_FILE_NO_LAMPSET);
+}
+
+#[test]
+fn test_parse_ldt_example_lampset(){
+    test_parse_ldt(EXAMPLE_LDT_FILE_LAMPSET);
+}
+
+fn test_parse_ldt(ldt_string: &str) {
     let mut ldt = EulumdatFile::new();
-    match ldt.parse(&EXAMPLE_LDT_FILE.to_owned()) {
+    match ldt.parse(&ldt_string.to_owned()) {
         Ok(_) => {
             // Check that the arrays are the correct length.
             assert_eq!(ldt.c_angles().iter().count(), ldt.n_cplanes());
@@ -49,10 +59,12 @@ fn test_parse_ldt_file() {
 #[test]
 fn test_ldt_into_photweb() {
     let mut ldt = EulumdatFile::new();
-    match ldt.parse(&EXAMPLE_LDT_FILE.to_owned()) {
+    // match ldt.parse(&EXAMPLE_LDT_FILE_NO_LAMPSET.to_owned()) {
+    match ldt.parse(&EXAMPLE_LDT_FILE_LAMPSET.to_owned()) {
         Ok(_) => {
             // Now attempt to convert to a photometric web.
             let photweb: PhotometricWeb = ldt.clone().into();
+            let total_intensity = photweb.total_intensity();
 
             // Test that the parameters have made it across.
             assert_eq!(photweb.planes().iter().count() as usize, ldt.n_cplanes());
