@@ -22,3 +22,4 @@ pub use self::{funcs::*, photweb::*, photweb_builder::*, plane::*, units::*};
 
 #[cfg(test)]
 mod tests;
+mod photometric_web_renderer;

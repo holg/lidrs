@@ -23,7 +23,7 @@ pub enum PlaneWidth {
 }
 
 impl PlaneWidth {
-    /// Returns a new instance of the plane spacing enum using the default value. 
+    /// Returns a new instance of the plane spacing enum using the default value.
     pub fn new() -> Self {
         PlaneWidth::default()
     }
@@ -35,7 +35,7 @@ impl PlaneWidth {
         }
     }
 
-    /// Returns the section of the width that lies below the central angle of the plane. 
+    /// Returns the section of the width that lies below the central angle of the plane.
     pub fn lower(&self) -> f64 {
         match *self {
             PlaneWidth::Symmetric(width) => width / 2.0,
@@ -43,7 +43,7 @@ impl PlaneWidth {
         }
     }
 
-    /// Returns the section of the width that lies above the central angle of the plane. 
+    /// Returns the section of the width that lies above the central angle of the plane.
     pub fn upper(&self) -> f64 {
         match *self {
             PlaneWidth::Symmetric(width) => width / 2.0,
@@ -53,7 +53,7 @@ impl PlaneWidth {
 }
 
 impl Default for PlaneWidth {
-    /// By default we will assume the spherically symmetric case. 
+    /// By default we will assume the spherically symmetric case.
     fn default() -> Self {
         PlaneWidth::Symmetric( 2.0 * std::f64::consts::PI )
     }
@@ -64,7 +64,7 @@ impl Default for PlaneWidth {
 pub struct Plane {
     /// The angle of the plane, stored in radians.
     angle: f64,
-    /// The width of the plane, in radians. 
+    /// The width of the plane, in radians.
     width: PlaneWidth,
     /// The orientation of the plane.
     orientation: PlaneOrientation,
@@ -137,6 +137,7 @@ impl Plane {
             .map(|(i, int)| int * f64::sin(self.angles[i]) * self.delta_angle(i))
             .sum::<f64>()
     }
+
 }
 
 #[cfg(test)]

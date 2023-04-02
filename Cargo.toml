@@ -17,7 +17,7 @@ readme = "README.md"
 property = "0.3.*"
 regex = "1.6.*"
 num_enum = "0.5.*"
-
+plotters = "0.3.*"
 [lib]
 crate-type = ["cdylib", "rlib"]
 
